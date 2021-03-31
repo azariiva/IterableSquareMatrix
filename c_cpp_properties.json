@@ -4,6 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/headers",
+                "${workspaceFolder}/headers/selectors",
+                "${workspaceFolder}/templates",
+                "${workspaceFolder}/templates/selectors",
                 "/usr/include/linux",
                 "/usr/include",
                 "/usr/local/include"

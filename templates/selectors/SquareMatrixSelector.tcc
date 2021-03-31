@@ -16,7 +16,7 @@ deref_T SquareMatrixSelector<matrix_T,deref_T>::operator*() const
 }
 
 template <typename matrix_T, typename deref_T>
-SquareMatrixSelector<matrix_T,deref_T>::SquareMatrixSelector(const SquareMatrix<matrix_T> *matrix, bool modifyable, size_t m_idx)
+SquareMatrixSelector<matrix_T,deref_T>::SquareMatrixSelector(const matrix_T *matrix, bool modifyable, size_t idx)
 {
     m_matrix = matrix;
     m_modifyable = modifyable;
@@ -24,23 +24,31 @@ SquareMatrixSelector<matrix_T,deref_T>::SquareMatrixSelector(const SquareMatrix<
 }
 
 template <typename matrix_T, typename deref_T>
+SquareMatrixSelector<matrix_T,deref_T>::SquareMatrixSelector(const SquareMatrixSelector& selector)
+{
+    m_matrix = selector.m_matrix;
+    m_modifyable = selector.m_modifyable;
+    m_idx = selector.m_idx;
+}
+
+template <typename matrix_T, typename deref_T>
 SquareMatrixSelector<matrix_T,deref_T>&& operator+(SquareMatrixSelector<matrix_T,deref_T>&& selector, size_t offset)
 {
     selector.m_idx += offset;
-    return lv;
+    return selector;
 }
 
 template <typename matrix_T, typename deref_T>
 SquareMatrixSelector<matrix_T,deref_T>&& operator+(size_t offset, SquareMatrixSelector<matrix_T,deref_T>&& selector)
 {
     selector.m_idx += offset;
-    return rv;
+    return selector;
 }
 
 template <typename matrix_T, typename deref_T>
 SquareMatrixSelector<matrix_T,deref_T>&& operator-(SquareMatrixSelector<matrix_T,deref_T>&& selector, size_t offset)
 {
     selector.m_idx -= offset;
-    return lv;
+    return selector;
 }
 
