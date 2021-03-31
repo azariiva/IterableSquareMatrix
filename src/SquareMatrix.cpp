@@ -141,3 +141,11 @@ SquareMatrix<val_T,row_T,col_T,rowv_T>::operator!=(
 {
     return m_num_rows != m.m_num_rows || m_num_columns != m.m_num_columns;
 }
+
+
+template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+typename SquareMatrix<val_T,row_T,col_T,rowv_T>::RowSelector
+operator+(SquareMatrix<val_T,row_T,col_T,rowv_T>, size_t)
+{
+    return RowSelector(this, true, )
+}

@@ -59,44 +59,44 @@ protected:
     size_t m_num_columns;
 };
 
-/*
-** Арифметические операции вида:
-** SquareMatrix (*) SquareMatrix
-*/
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator+(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator-(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator*(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator/(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> dot(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
+// /*
+// ** Арифметические операции вида:
+// ** SquareMatrix (*) SquareMatrix
+// */
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator+(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator-(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator*(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator/(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> dot(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&,
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
 
-/*
-** Арифметичесик операции вида:
-** SquareMatrix (*) double или  double (*) SquareMatrix
-*/
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator*(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&, const val_T&);
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator*(
-    const val_T&, const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
-template <typename val_T, typename row_T, typename col_T, typename rowv_T>
-SquareMatrix<val_T,row_T,col_T,rowv_T> operator/(
-    const SquareMatrix<val_T,row_T,col_T,rowv_T>&, const val_T&);
+// /*
+// ** Арифметичесик операции вида:
+// ** SquareMatrix (*) double или  double (*) SquareMatrix
+// */
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator*(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&, const val_T&);
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator*(
+//     const val_T&, const SquareMatrix<val_T,row_T,col_T,rowv_T>&);
+// template <typename val_T, typename row_T, typename col_T, typename rowv_T>
+// SquareMatrix<val_T,row_T,col_T,rowv_T> operator/(
+//     const SquareMatrix<val_T,row_T,col_T,rowv_T>&, const val_T&);
 
 /*
 ** Адресная арифметика
