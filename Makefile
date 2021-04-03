@@ -18,7 +18,7 @@ obj:
 	mkdir -p obj
 
 obj/%.o: src/%.cpp $(HPPFILES)
-	@$(CC) $(CF) -I headers -I headers/selectors -I templates -I templates/selectors -c $< -o $@
+	@$(CC) $(CF) -I headers -I templates -c $< -o $@
 	@echo "$@ compiled"
 
 object_files: obj $(OFILES)

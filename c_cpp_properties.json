@@ -4,9 +4,10 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/headers",
-                "${workspaceFolder}/headers/selectors",
-                "${workspaceFolder}/templates",
-                "${workspaceFolder}/templates/selectors",
+                "${workspaceFolder}/headers/DenseMatrix",
+                "${workspaceFolder}/headers/SquareMatrix",
+                "${workspaceFolder}/templates/DenseMatrix",
+                "${workspaceFolder}/templates/SquareMatrix",
                 "/usr/include/linux",
                 "/usr/include",
                 "/usr/local/include"
