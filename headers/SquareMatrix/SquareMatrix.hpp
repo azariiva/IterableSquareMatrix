@@ -11,9 +11,10 @@ protected:
 public:
     typedef ::SquareMatrixSelector<value_T,SquareMatrix> SquareMatrixSelector;
     typedef ::SquareMatrixValueSelector<value_T,SquareMatrix> SquareMatrixValueSelector;
+    typedef ::SquareMatrixSelectorTemplate<SquareMatrix,SquareMatrixValueSelector> SquareMatrixSelectorTemplate;
     
 public:
-    SquareMatrix() = delete;
+    SquareMatrix() {};
     SquareMatrix(size_t, size_t);
     SquareMatrix(const SquareMatrix&);
     virtual ~SquareMatrix();

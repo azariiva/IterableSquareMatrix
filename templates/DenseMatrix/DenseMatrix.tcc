@@ -19,26 +19,32 @@ DenseMatrix<T>::DenseMatrix(const DenseMatrix &m) : SquareMatrix(m)
     }
 }
 
-// template <typename T>
-// DenseMatrix<T>::DenseMatrix(const typename SquareMatrix::SquareMatrixSelector& m) :
-// SquareMatrix(m.matrix()->num_rows(), m.matrix()->num_columns())
-// {
-//     size_t rb = 0;
-//     size_t cb = 0;
+#include <iostream>
+template <typename T>
+DenseMatrix<T>::DenseMatrix(const SquareMatrixSelectorTemplate& m) :
+SquareMatrix(m.matrix()->num_rows(), m.matrix()->num_columns())
+{
+    size_t off = m.idx();
 
-//     if (m.set() == set_mode::row)
-//         rb = m.idx();
-//     else
-//         cb = m.idx();
-//     m_matrix = new Value*[m.matrix()->num_rows() - rb];
-//     for (size_t i = rb; i < m.matrix()->num_rows(); ++i) {
-//         m_matrix[i] = new Value[m.matrix()->num_columns() - cb];
-//         for(size_t j = cb; j < m.matrix()->num_columns(); ++j)
-//             m_matrix[i - rb][j - cb] = m.matrix()->get(i, j);
-//     }
-//     SquareMatrix::m_num_rows -= rb;
-//     SquareMatrix::m_num_columns -= cb;
-// }
+    if (m.set() == set_mode::row) {
+        m_matrix = new Value*[m.matrix()->num_rows() - off];
+        for (size_t i = off; i < m.matrix()->num_rows(); ++i) {
+            m_matrix[i - off] = new Value[m.matrix()->num_columns()];
+            for(size_t j = 0; j < m.matrix()->num_columns(); ++j)
+                m_matrix[i - off][j] = m.matrix()->get(i, j);
+        }
+        SquareMatrix::m_num_rows -= off;
+    } else {
+        m_matrix = new Value*[m.matrix()->num_columns() - off];
+        for (size_t i = off; i < m.matrix()->num_columns(); ++i) {
+            m_matrix[i - off] = new Value[m.matrix()->num_rows()];
+            for(size_t j = 0; j < m.matrix()->num_rows(); ++j)
+                m_matrix[i - off][j] = m.matrix()->get(j, i);
+        }
+        SquareMatrix::m_num_rows = m.matrix()->num_columns() - off;
+        SquareMatrix::m_num_columns = m.matrix()->num_rows();
+    }
+}
 
 template <typename T>
 DenseMatrix<T>::~DenseMatrix()
@@ -55,62 +61,82 @@ DenseMatrix<T>& DenseMatrix<T>::operator=(const DenseMatrix& m)
         return *this;
     if (SquareMatrix::m_num_rows == m.m_num_rows) {
         if (SquareMatrix::m_num_columns != m.m_num_columns) {
+            SquareMatrix::m_num_columns = m.m_num_columns;
             for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i) {
                 delete[] m_matrix[i];
-                m_matrix[i] = new Value[m.m_num_columns];
+                m_matrix[i] = new Value[SquareMatrix::m_num_columns];
             }
         }
     } else {
         for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
             delete[] m_matrix[i];
         delete[] m_matrix;
-        m_matrix = new Value*[m.m_num_rows];
-        for (size_t i = 0; i < m.m_num_rows; ++i)
-            m_matrix[i] = new Value[m.m_num_columns];
+        SquareMatrix::m_num_rows = m.m_num_rows;
+        m_matrix = new Value*[SquareMatrix::m_num_rows];
+        SquareMatrix::m_num_columns = m.m_num_columns;
+        for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+            m_matrix[i] = new Value[SquareMatrix::m_num_columns];
     }
-    SquareMatrix::m_num_rows = m.m_num_rows;
-    SquareMatrix::m_num_columns = m.m_num_columns;
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
             m_matrix[i][j] = m.m_matrix[i][j];
     return *this;
 }
 
-// template <typename T>
-// DenseMatrix<T>& DenseMatrix<T>::operator=(const typename SquareMatrix::SquareMatrixSelector& m)
-// {
-//     if (this == m.matrix())
-//         throw std::runtime_error("this feature doesn't supported yet");
-//     size_t rb = 0;
-//     size_t cb = 0;
+template <typename T>
+DenseMatrix<T>& DenseMatrix<T>::operator=(const SquareMatrixSelectorTemplate& m)
+{
+    if (this == m.matrix())
+        throw std::runtime_error("this feature doesn't supported yet");
+    
+    size_t off = m.idx();
 
-//     if (m.set() == set_mode::row)
-//         rb = m.idx();
-//     else
-//         cb = m.idx();
-//     if (SquareMatrix::m_num_rows == m.matrix()->num_rows() - rb) {
-//         if (SquareMatrix::m_num_columns != m.matrix()->num_columns() - cb) {
-//             SquareMatrix::m_num_columns = m.matrix()->num_columns() - cb;
-//             for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i) {
-//                 delete[] m_matrix[i];
-//                 m_matrix[i] = new Value[SquareMatrix::m_num_columns];
-//             }
-//         }
-//     } else {
-//         for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
-//             delete[] m_matrix[i];
-//         delete[] m_matrix;
-//         SquareMatrix::m_num_rows = m.matrix()->num_rows() - rb;
-//         SquareMatrix::m_num_columns = m.matrix()->num_columns() - cb;
-//         m_matrix = new Value*[SquareMatrix::m_num_rows];
-//         for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
-//             m_matrix[i] = new Value[SquareMatrix::m_num_columns];
-//     }
-//     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
-//         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
-//             m_matrix[i][j] = m.matrix()->get(i + rb, j + cb);
-//     return *this;
-// }
+    if (m.set() == set_mode::row) {
+        if (m.matrix()->num_rows() - off == SquareMatrix::m_num_rows) {
+            if (m.matrix()->num_columns() != SquareMatrix::m_num_columns) {
+                SquareMatrix::m_num_columns = m.matrix()->num_columns();
+                for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i) {
+                    delete[] m_matrix[i];
+                    m_matrix[i] = new Value[SquareMatrix::m_num_columns];
+                }
+            }
+        } else {
+            for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+                delete[] m_matrix[i];
+            delete[] m_matrix;
+            SquareMatrix::m_num_rows = m.matrix()->num_rows() - off;
+            m_matrix = new Value*[SquareMatrix::m_num_rows];
+            SquareMatrix::m_num_columns = m.matrix()->num_columns();
+            for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+                m_matrix[i] = new Value[SquareMatrix::m_num_columns];
+        }
+        for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+            for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
+                m_matrix[i][j] = m.matrix()->get(i + off, j);
+    } else {
+        if (m.matrix()->num_columns() - off == SquareMatrix::m_num_rows) {
+            if (m.matrix()->num_rows() != SquareMatrix::m_num_columns) {
+                SquareMatrix::m_num_columns = m.matrix()->num_rows();
+                for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i) {
+                    delete[] m_matrix[i];
+                    m_matrix[i] = new Value[SquareMatrix::m_num_columns];
+                }
+            }
+        } else {
+            for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+                delete[] m_matrix[i];
+            delete[] m_matrix;
+            SquareMatrix::m_num_rows = m.matrix()->num_columns() - off;
+            m_matrix = new Value*[SquareMatrix::m_num_rows];
+            SquareMatrix::m_num_columns = m.matrix()->num_rows();
+            for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+                m_matrix[i] = new Value[SquareMatrix::m_num_columns];
+        }
+        for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
+            for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
+                m_matrix[i][j] = m.matrix()->get(j, i + off);
+    }
+}
 
 template <typename T>
 const typename DenseMatrix<T>::Value& DenseMatrix<T>::get(size_t row, size_t column) const

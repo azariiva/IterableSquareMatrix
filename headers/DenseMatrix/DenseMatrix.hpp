@@ -13,15 +13,18 @@ public:
     typedef typename SquareMatrix::SquareMatrixSelector SquareMatrixSelector;
 
 private:
+    typedef typename SquareMatrix::SquareMatrixSelectorTemplate SquareMatrixSelectorTemplate;
+
+private:
     typedef typename SquareMatrix::Value Value;
 
 public:
     DenseMatrix(size_t, size_t);
     DenseMatrix(const DenseMatrix&);
-    // DenseMatrix(const typename SquareMatrix::SquareMatrixSelector&);
+    DenseMatrix(const SquareMatrixSelectorTemplate&);
     ~DenseMatrix();
     DenseMatrix& operator=(const DenseMatrix&);
-    // DenseMatrix& operator=(const typename SquareMatrix::SquareMatrixSelector&);
+    DenseMatrix& operator=(const SquareMatrixSelectorTemplate&);
     inline const Value& get(size_t, size_t) const;
     inline Value& get(size_t, size_t);
     DenseMatrix dot(const DenseMatrix&);
