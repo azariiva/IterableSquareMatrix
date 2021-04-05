@@ -38,21 +38,23 @@ private:
 };
 
 template <typename T>
-DenseMatrix<T> operator+(const DenseMatrix<T>&, const DenseMatrix<T>&);
+DenseMatrix<T> operator+(const DenseMatrix<T>::SquareMatrix&, const DenseMatrix<T>::SquareMatrix&);
 template <typename T>
-DenseMatrix<T> operator-(const DenseMatrix<T>&, const DenseMatrix<T>&);
+DenseMatrix<T> operator-(const DenseMatrix<T>::SquareMatrix&, const DenseMatrix<T>::SquareMatrix&);
 template <typename T>
-DenseMatrix<T> operator*(const DenseMatrix<T>&, const DenseMatrix<T>&);
+DenseMatrix<T> operator*(const DenseMatrix<T>::SquareMatrix&, const DenseMatrix<T>::SquareMatrix&);
 template <typename T>
-DenseMatrix<T> operator/(const DenseMatrix<T>&, const DenseMatrix<T>&);
+DenseMatrix<T> operator/(const DenseMatrix<T>::SquareMatrix&, const DenseMatrix<T>::SquareMatrix&);
 template <typename T>
-DenseMatrix<T> operator*(const DenseMatrix<T>&, const T&);
+DenseMatrix<T> dot(const DenseMatrix<T>::SquareMatrix&, const DenseMatrix<T>::SquareMatrix&);
+
+// TODO: High test neccesity
 template <typename T>
-DenseMatrix<T> operator*(const T&, const DenseMatrix<T>&);
+DenseMatrix<T> operator*(const DenseMatrix<T>::SquareMatrix&, const T&);
 template <typename T>
-DenseMatrix<T> operator/(const DenseMatrix<T>&, const T&);
+DenseMatrix<T> operator*(const T&, const DenseMatrix<T>::SquareMatrix&);
 template <typename T>
-DenseMatrix<T> dot(const DenseMatrix<T>&, const DenseMatrix<T>&);
+DenseMatrix<T> operator/(const DenseMatrix<T>::SquareMatrix&, const T&);
 
 #include "../../templates/DenseMatrix/DenseMatrix.tcc"
 
