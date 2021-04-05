@@ -19,7 +19,6 @@ DenseMatrix<T>::DenseMatrix(const DenseMatrix &m) : SquareMatrix(m)
     }
 }
 
-#include <iostream>
 template <typename T>
 DenseMatrix<T>::DenseMatrix(const SquareMatrixSelectorTemplate& m) :
 SquareMatrix(m.matrix()->num_rows(), m.matrix()->num_columns())
@@ -154,7 +153,7 @@ typename DenseMatrix<T>::Value& DenseMatrix<T>::get(size_t row, size_t column) {
 }
 
 template <typename T>
-DenseMatrix<T> DenseMatrix<T>::dot(const DenseMatrix& m)
+DenseMatrix<T> DenseMatrix<T>::dot(const DenseMatrix& m) const
 {
     if (SquareMatrix::m_num_columns != m.m_num_rows)
         throw std::invalid_argument("operands could not be broadcast together");
@@ -185,4 +184,66 @@ DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
             op(get(i, j), val);
     return *this;
+}
+
+template <typename T>
+DenseMatrix<T> operator+(const DenseMatrix<T>& lm, const DenseMatrix<T>& rm)
+{
+    DenseMatrix<T> m = lm;
+    m += rm;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> operator-(const DenseMatrix<T>& lm, const DenseMatrix<T>& rm)
+{
+    DenseMatrix<T> m = lm;
+    m -= rm;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> operator*(const DenseMatrix<T>& lm, const DenseMatrix<T>& rm)
+{
+    DenseMatrix<T> m = lm;
+    m *= rm;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> operator/(const DenseMatrix<T>& lm, const DenseMatrix<T>& rm)
+{
+    DenseMatrix<T> m = lm;
+    m /= rm;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> operator*(const DenseMatrix<T>& lm, const T& rt)
+{
+    DenseMatrix<T> m = lm;
+    m *= rt;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> operator*(const T& lt, const DenseMatrix<T>& rm)
+{
+    DenseMatrix<T> m = rm;
+    m *= lt;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> operator/(const DenseMatrix<T>& lm, const T& rt)
+{
+    DenseMatrix<T> m = lm;
+    m /= rt;
+    return m;
+}
+
+template <typename T>
+DenseMatrix<T> dot(const DenseMatrix<T>& lm, const DenseMatrix<T>& rm)
+{
+    return lm.dot(rm);
 }

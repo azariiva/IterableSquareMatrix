@@ -27,7 +27,7 @@ public:
     DenseMatrix& operator=(const SquareMatrixSelectorTemplate&);
     inline const Value& get(size_t, size_t) const;
     inline Value& get(size_t, size_t);
-    DenseMatrix dot(const DenseMatrix&);
+    DenseMatrix dot(const DenseMatrix&) const;
 
 private:
     DenseMatrix& perform_operation(void (*op)(Value&, const Value&), const SquareMatrix& m);
@@ -36,6 +36,23 @@ private:
 private:
     Value **m_matrix;
 };
+
+template <typename T>
+DenseMatrix<T> operator+(const DenseMatrix<T>&, const DenseMatrix<T>&);
+template <typename T>
+DenseMatrix<T> operator-(const DenseMatrix<T>&, const DenseMatrix<T>&);
+template <typename T>
+DenseMatrix<T> operator*(const DenseMatrix<T>&, const DenseMatrix<T>&);
+template <typename T>
+DenseMatrix<T> operator/(const DenseMatrix<T>&, const DenseMatrix<T>&);
+template <typename T>
+DenseMatrix<T> operator*(const DenseMatrix<T>&, const T&);
+template <typename T>
+DenseMatrix<T> operator*(const T&, const DenseMatrix<T>&);
+template <typename T>
+DenseMatrix<T> operator/(const DenseMatrix<T>&, const T&);
+template <typename T>
+DenseMatrix<T> dot(const DenseMatrix<T>&, const DenseMatrix<T>&);
 
 #include "../../templates/DenseMatrix/DenseMatrix.tcc"
 
