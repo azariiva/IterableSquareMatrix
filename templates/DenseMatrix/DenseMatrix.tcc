@@ -183,6 +183,7 @@ DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
         {
+            get(i, j)
             m_val = get(i, j);
             op(m_val, m.get(i, j));
             if (abs(m_val - T()) <= SquareMatrix::get_precision())

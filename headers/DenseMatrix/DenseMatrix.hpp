@@ -16,7 +16,9 @@ private:
     typedef typename SquareMatrix::SquareMatrixSelectorTemplate SquareMatrixSelectorTemplate;
     typedef typename SquareMatrix::Value Value;
     typedef typename DenseMatrixValue<T> DenseMatrixValue;
-    
+
+    friend DenseMatrixValue;
+
 public:
     DenseMatrix(size_t, size_t);
     DenseMatrix(const DenseMatrix&);

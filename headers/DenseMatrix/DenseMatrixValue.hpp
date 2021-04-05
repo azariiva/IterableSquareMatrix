@@ -18,6 +18,9 @@ private:
 public:
     DenseMatrixValue(const typename SquareMatrixValueSelector::SquareMatrixSelectorTemplate& s);
     DenseMatrixValue(size_t, size_t, bool, const DenseMatrix *);
+
+private:
+    DenseMatrixValue& perform_operation(void (*)(Value&, const Value&), const Value&);
 };
 
 #include "../../templates/DenseMatrix/DenseMatrixValue.tcc"

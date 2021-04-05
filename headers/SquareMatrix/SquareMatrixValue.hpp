@@ -28,7 +28,7 @@ public:
     virtual operator Value() const;
 
 private:
-    virtual SquareMatrixValue& perform_operation(void (*)(Value&, const Value&), const Value&);
+    virtual SquareMatrixValue& perform_operation(void (*)(Value&, const Value&), const Value&) = 0;
 
 protected:
     size_t m_row;
