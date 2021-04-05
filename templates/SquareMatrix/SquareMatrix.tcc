@@ -3,17 +3,25 @@
 
 template <typename T, typename value_T>
 SquareMatrix<T,value_T>::SquareMatrix(size_t num_rows, size_t num_columns) :
-m_num_rows(num_rows), m_num_columns(num_columns) {
+m_num_rows(num_rows), m_num_columns(num_columns)
+{
     if (m_num_rows == 0 || m_num_columns == 0)
         throw std::logic_error("matrix couldn't be 0xN or Nx0");
+    ++m_instance_quantity;
 }
 
 template <typename T, typename value_T>
 SquareMatrix<T,value_T>::SquareMatrix(const SquareMatrix& m) :
-m_num_rows(m.m_num_rows), m_num_columns(m.m_num_columns) {}
+m_num_rows(m.m_num_rows), m_num_columns(m.m_num_columns) 
+{
+    ++m_instance_quantity;
+}
 
 template <typename T, typename value_T>
-SquareMatrix<T,value_T>::~SquareMatrix() {}
+SquareMatrix<T,value_T>::~SquareMatrix()
+{
+    --m_instance_quantity;
+}
 
 template <typename T, typename value_T>
 SquareMatrix<T,value_T>& SquareMatrix<T,value_T>::operator=(const SquareMatrix& m)
@@ -143,43 +151,63 @@ SquareMatrix<T,value_T>::operator!=(const SquareMatrix& m) const
 }
 
 template <typename T, typename value_T>
-typename SquareMatrix<T, value_T>::SquareMatrixSelector
-operator+(SquareMatrix<T, value_T>& matrix, size_t idx)
+typename SquareMatrix<T,value_T>::SquareMatrixSelector
+operator+(SquareMatrix<T,value_T>& matrix, size_t idx)
 {
-    return typename SquareMatrix<T, value_T>::SquareMatrixSelector(&matrix, true, idx);
+    return typename SquareMatrix<T,value_T>::SquareMatrixSelector(&matrix, true, idx);
 }
 
 template <typename T, typename value_T>
-typename SquareMatrix<T, value_T>::SquareMatrixSelector
-operator+(const SquareMatrix<T, value_T>& matrix, size_t idx)
+typename SquareMatrix<T,value_T>::SquareMatrixSelector
+operator+(const SquareMatrix<T,value_T>& matrix, size_t idx)
 {
-    return typename SquareMatrix<T, value_T>::SquareMatrixSelector(&matrix, false, idx);
+    return typename SquareMatrix<T,value_T>::SquareMatrixSelector(&matrix, false, idx);
 }
 
 template <typename T, typename value_T>
-typename SquareMatrix<T, value_T>::SquareMatrixSelector
-operator+(size_t idx, SquareMatrix<T, value_T>& matrix)
+typename SquareMatrix<T,value_T>::SquareMatrixSelector
+operator+(size_t idx, SquareMatrix<T,value_T>& matrix)
 {
-    return typename SquareMatrix<T, value_T>::SquareMatrixSelector(&matrix, true, idx);
+    return typename SquareMatrix<T,value_T>::SquareMatrixSelector(&matrix, true, idx);
 }
 
 template <typename T, typename value_T>
-typename SquareMatrix<T, value_T>::SquareMatrixSelector
-operator+(size_t idx, const SquareMatrix<T, value_T>& matrix)
+typename SquareMatrix<T,value_T>::SquareMatrixSelector
+operator+(size_t idx, const SquareMatrix<T,value_T>& matrix)
 {
-    return typename SquareMatrix<T, value_T>::SquareMatrixSelector(&matrix, false, idx);
+    return typename SquareMatrix<T,value_T>::SquareMatrixSelector(&matrix, false, idx);
 }
 
 template <typename T, typename value_T>
-typename SquareMatrix<T, value_T>::SquareMatrixSelector
-operator-(SquareMatrix<T, value_T>& matrix, size_t idx)
+typename SquareMatrix<T,value_T>::SquareMatrixSelector
+operator-(SquareMatrix<T,value_T>& matrix, size_t idx)
 {
-    return typename SquareMatrix<T, value_T>::SquareMatrixSelector(&matrix, true, -idx);
+    return typename SquareMatrix<T,value_T>::SquareMatrixSelector(&matrix, true, -idx);
 }
 
 template <typename T, typename value_T>
-typename SquareMatrix<T, value_T>::SquareMatrixSelector
-operator-(const SquareMatrix<T, value_T>& matrix, size_t idx)
+typename SquareMatrix<T,value_T>::SquareMatrixSelector
+operator-(const SquareMatrix<T,value_T>& matrix, size_t idx)
 {
-    return typename SquareMatrix<T, value_T>::SquareMatrixSelector(&matrix, false, -idx);
+    return typename SquareMatrix<T,value_T>::SquareMatrixSelector(&matrix, false, -idx);
 }
+
+template <typename T, typename value_T>
+void SquareMatrix<T,value_T>::set_precision(const T& precision)
+{
+    if (m_instance_quantity != 0)
+        throw std::logic_error("Could not set precision when instances of class exist");
+    m_precision = precision;
+}
+
+template <typename T, typename value_T>
+const T& SquareMatrix<T,value_T>::get_precision()
+{
+    return m_precision;
+}
+
+template <typename T, typename value_T>
+size_t SquareMatrix<T,value_T>::m_instance_quantity = 0;
+
+template <typename T, typename value_T>
+T SquareMatrix<T,value_T>::m_precision = T();

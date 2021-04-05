@@ -14,14 +14,16 @@ public:
     typedef ::SquareMatrixSelectorTemplate<SquareMatrix,SquareMatrixValueSelector> SquareMatrixSelectorTemplate;
     
 public:
-    SquareMatrix() {};
+    inline static void set_precision(const T&);
+    inline static const T& get_precision();
+
     SquareMatrix(size_t, size_t);
     SquareMatrix(const SquareMatrix&);
     virtual ~SquareMatrix();
     virtual SquareMatrix& operator=(const SquareMatrix&);
 
-    virtual Value& get(size_t, size_t) = 0;
     virtual const Value& get(size_t, size_t) const = 0;
+    virtual value_T get(size_t, size_t) = 0;
     inline void set(size_t, size_t, const Value&);
 
     inline size_t num_rows() const;
@@ -57,6 +59,10 @@ public:
 private:
     virtual SquareMatrix& perform_operation(void (*)(Value&,const Value&), const SquareMatrix&) = 0;
     virtual SquareMatrix& perform_operation(void (*)(Value&,const Value&), const Value&) = 0;
+
+private:
+    static size_t m_instance_quantity;
+    static T m_precision;
 
 protected:
     size_t m_num_rows;

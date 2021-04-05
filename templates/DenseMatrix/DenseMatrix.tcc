@@ -1,4 +1,5 @@
 #include "../../headers/DenseMatrix/DenseMatrix.hpp"
+#include <cmath>
 
 template <typename T>
 DenseMatrix<T>::DenseMatrix(size_t num_rows, size_t num_columns) : SquareMatrix(num_rows, num_columns)
@@ -146,10 +147,10 @@ const typename DenseMatrix<T>::Value& DenseMatrix<T>::get(size_t row, size_t col
 }
 
 template <typename T>
-typename DenseMatrix<T>::Value& DenseMatrix<T>::get(size_t row, size_t column) {
+typename DenseMatrix<T>::DenseMatrixValue& DenseMatrix<T>::get(size_t row, size_t column) {
     if (row >= SquareMatrix::m_num_rows || column >= SquareMatrix::m_num_columns)
         throw std::out_of_range("num_rows|num_columns exceeded");
-    return m_matrix[row][column];
+    return DenseMatrixValue(row, column, true, this);
 }
 
 template <typename T>
@@ -157,32 +158,52 @@ DenseMatrix<T> DenseMatrix<T>::dot(const DenseMatrix& m) const
 {
     if (SquareMatrix::m_num_columns != m.m_num_rows)
         throw std::invalid_argument("operands could not be broadcast together");
+
     DenseMatrix r(SquareMatrix::m_num_rows, m.m_num_columns);
+    T& r_val;
 
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
-        for (size_t j = 0; j < m.m_num_columns; ++j)
+        for (size_t j = 0; j < m.m_num_columns; ++j) {
+            r_val = r.get(i, j);
             for (size_t k = 0; k < SquareMatrix::m_num_columns; ++k)
-                r.get(i, j) += get(i, k) * m.get(k, j);
+                r_val += get(i, k) * m.get(k, j);
+            if (abs(r_val - T()) <= SquareMatrix::get_precision())
+                r_val = 0;
+        }
     return r;
 }
 
 template <typename T>
 DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value&), const SquareMatrix& m)
 {
+    T& m_val;
+
     if (SquareMatrix::m_num_rows != m.num_rows() || SquareMatrix::m_num_columns != m.num_columns())
         throw std::invalid_argument("operands could not be broadcast together");
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
-            op(get(i, j), m.get(i, j));
+        {
+            m_val = get(i, j);
+            op(m_val, m.get(i, j));
+            if (abs(m_val - T()) <= SquareMatrix::get_precision())
+                m_val = T();
+        }
     return *this;
 }
 
 template <typename T>
 DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value&), const Value& val)
 {
+    T& m_val;
+
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
-            op(get(i, j), val);
+        {
+            m_val = get(i, j);
+            op(m_val, val);
+            if (abs(m_val - T()) <= SquareMatrix::get_precision())
+                m_val = T();
+        }
     return *this;
 }
 
