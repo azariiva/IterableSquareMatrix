@@ -12,7 +12,7 @@ public:
 
 public:
     SquareMatrixValue(size_t, size_t, set_mode, bool, const Matrix *);
-    virtual SquareMatrixValue& operator=(const Value&);
+    virtual SquareMatrixValue& operator=(const Value&) = 0;
     SquareMatrixValue& operator=(const SquareMatrixValue&);
 
     SquareMatrixValue& operator+=(const Value&);
@@ -25,10 +25,10 @@ public:
     bool operator!=(const Value&) const;
     bool operator!=(const SquareMatrixValue&) const;
 
-    virtual operator Value() const;
+    virtual operator Value() const = 0;
 
 private:
-    virtual SquareMatrixValue& perform_operation(void (*)(Value&, const Value&), const Value&);
+    virtual SquareMatrixValue& perform_operation(void (*)(Value&, const Value&), const Value&) = 0;
 
 protected:
     size_t m_row;

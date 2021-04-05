@@ -14,10 +14,14 @@ private:
     typedef ::SquareMatrixValue<T,SquareMatrix<T,DenseMatrixValue<T> > > SquareMatrixValue;
     typedef typename ::DenseMatrix<T> DenseMatrix;
     typedef typename DenseMatrix::SquareMatrix::SquareMatrixValueSelector SquareMatrixValueSelector;
+    typedef typename SquareMatrixValue::Value Value;
 
 public:
     DenseMatrixValue(const typename SquareMatrixValueSelector::SquareMatrixSelectorTemplate& s);
     DenseMatrixValue(size_t, size_t, bool, const DenseMatrix *);
+    inline operator Value() const;
+    SquareMatrixValue& perform_operation(void (*)(Value&, const Value&), const Value&);
+    SquareMatrixValue& operator=(const Value&);
 };
 
 #include "../../templates/DenseMatrix/DenseMatrixValue.tcc"

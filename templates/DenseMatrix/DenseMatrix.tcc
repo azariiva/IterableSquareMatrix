@@ -147,10 +147,10 @@ const typename DenseMatrix<T>::Value& DenseMatrix<T>::get(size_t row, size_t col
 }
 
 template <typename T>
-typename DenseMatrix<T>::DenseMatrixValue& DenseMatrix<T>::get(size_t row, size_t column) {
+DenseMatrixValue<T> DenseMatrix<T>::get(size_t row, size_t column) {
     if (row >= SquareMatrix::m_num_rows || column >= SquareMatrix::m_num_columns)
         throw std::out_of_range("num_rows|num_columns exceeded");
-    return DenseMatrixValue(row, column, true, this);
+    return DenseMatrixValue<T>(row, column, true, this);
 }
 
 template <typename T>
@@ -208,7 +208,7 @@ DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value
 }
 
 template <typename T>
-DenseMatrix<T> operator+(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatrix<T>::SquareMatrix& rm)
+DenseMatrix<T> operator+(const typename DenseMatrix<T>::SquareMatrix& lm, const typename DenseMatrix<T>::SquareMatrix& rm)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(lm);
     m += rm;
@@ -216,7 +216,7 @@ DenseMatrix<T> operator+(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatr
 }
 
 template <typename T>
-DenseMatrix<T> operator-(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatrix<T>::SquareMatrix& rm)
+DenseMatrix<T> operator-(const typename DenseMatrix<T>::SquareMatrix& lm, const typename DenseMatrix<T>::SquareMatrix& rm)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(lm);
     m -= rm;
@@ -224,7 +224,7 @@ DenseMatrix<T> operator-(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatr
 }
 
 template <typename T>
-DenseMatrix<T> operator*(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatrix<T>::SquareMatrix& rm)
+DenseMatrix<T> operator*(const typename DenseMatrix<T>::SquareMatrix& lm, const typename DenseMatrix<T>::SquareMatrix& rm)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(lm);
     m *= rm;
@@ -232,7 +232,7 @@ DenseMatrix<T> operator*(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatr
 }
 
 template <typename T>
-DenseMatrix<T> operator/(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatrix<T>::SquareMatrix& rm)
+DenseMatrix<T> operator/(const typename DenseMatrix<T>::SquareMatrix& lm, const typename DenseMatrix<T>::SquareMatrix& rm)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(lm);
     m /= rm;
@@ -240,13 +240,13 @@ DenseMatrix<T> operator/(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatr
 }
 
 template <typename T>
-DenseMatrix<T> dot(const DenseMatrix<T>::SquareMatrix& lm, const DenseMatrix<T>::SquareMatrix& rm)
+DenseMatrix<T> dot(const typename DenseMatrix<T>::SquareMatrix& lm, const typename DenseMatrix<T>::SquareMatrix& rm)
 {
     return lm.dot(rm);
 }
 
 template <typename T>
-DenseMatrix<T> operator*(const DenseMatrix<T>::SquareMatrix& lm, const T& rt)
+DenseMatrix<T> operator*(const typename DenseMatrix<T>::SquareMatrix& lm, const T& rt)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(lm);
     m *= rt;
@@ -254,7 +254,7 @@ DenseMatrix<T> operator*(const DenseMatrix<T>::SquareMatrix& lm, const T& rt)
 }
 
 template <typename T>
-DenseMatrix<T> operator*(const T& lt, const DenseMatrix<T>::SquareMatrix& rm)
+DenseMatrix<T> operator*(const T& lt, const typename DenseMatrix<T>::SquareMatrix& rm)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(rm);
     m *= lt;
@@ -262,7 +262,7 @@ DenseMatrix<T> operator*(const T& lt, const DenseMatrix<T>::SquareMatrix& rm)
 }
 
 template <typename T>
-DenseMatrix<T> operator/(const DenseMatrix<T>::SquareMatrix& lm, const T& rt)
+DenseMatrix<T> operator/(const typename DenseMatrix<T>::SquareMatrix& lm, const T& rt)
 {
     DenseMatrix<T> m = static_cast<const DenseMatrix<T>&>(lm);
     m /= rt;

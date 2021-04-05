@@ -65,27 +65,3 @@ bool SquareMatrixValue<val_T,matrix_T>::operator!=(const SquareMatrixValue& v) c
 {
     return operator Value() != v.operator Value();
 }
-
-template <typename val_T, class matrix_T>
-SquareMatrixValue<val_T,matrix_T>& SquareMatrixValue<val_T,matrix_T>::operator=(const Value& val)
-{
-    if (m_modifyable == false)
-        throw std::logic_error("Could not modify constant value");
-    else
-        m_matrix->set(m_row, m_column, val);
-}
-
-template <typename val_T, class matrix_T>
-SquareMatrixValue<val_T,matrix_T>::operator Value() const
-{
-    return m_matrix->get(m_row, m_column);
-}
-
-template <typename val_T, class matrix_T>
-SquareMatrixValue<val_T,matrix_T>& SquareMatrixValue<val_T,matrix_T>::perform_operation(void (*op)(Value&, const Value&), const Value& val)
-{
-    if (m_modifyable == false)
-        throw std::logic_error("Could not modify constant value");
-    else
-        op(m_matrix->get(m_row, m_column), val);
-}
