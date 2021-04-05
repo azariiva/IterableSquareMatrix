@@ -14,7 +14,7 @@ DenseMatrixValue<T>::DenseMatrixValue(
 template <typename T>
 DenseMatrixValue<T>::operator Value() const
 {
-    return (SquareMatrixValue::m_matrix->m_matrix)[SquareMatrixValue::m_row][SquareMatrixValue::m_column];
+    return SquareMatrixValue::m_matrix->get(SquareMatrixValue::m_row, SquareMatrixValue::m_column);
 }
 
 template <typename T>
@@ -22,13 +22,13 @@ typename DenseMatrixValue<T>::SquareMatrixValue&
 DenseMatrixValue<T>::perform_operation(
     void (*op)(Value&, const Value&), const Value& val)
 {
-    Value& m_val;
+    Value m_val;
 
     if (SquareMatrixValue::m_modifyable == false)
         throw std::logic_error("Could not modify constant value");
-    m_val = (SquareMatrixValue::m_matrix->m_matrix)[SquareMatrixValue::m_row][SquareMatrixValue::m_column];
+    m_val = static_cast<DenseMatrix *>(SquareMatrixValue::m_matrix)->m_matrix[SquareMatrixValue::m_row][SquareMatrixValue::m_column];
     op(m_val, val);
-    if (abs(m_val - Value()) <= SquareMatrixValue::m_matrix->m_precision)
+    if (abs(m_val - Value()) <= SquareMatrixValue::m_matrix->get_precision())
         m_val = 0;
     return *this;
 }
@@ -38,7 +38,7 @@ typename DenseMatrixValue<T>::SquareMatrixValue& DenseMatrixValue<T>::operator=(
 {
     if (SquareMatrixValue::m_modifyable == false)
         throw std::logic_error("Could not modify constant value");
-    if (abs(val - Value()) > SquareMatrixValue::m_matrix->m_precision)
-        (SquareMatrixValue::m_matrix->m_matrix)[SquareMatrixValue::m_row][SquareMatrixValue::m_column] = val;
+    if (abs(val - Value()) > SquareMatrixValue::m_matrix->get_precision())
+        SquareMatrixValue::m_matrix->set(SquareMatrixValue::m_row, SquareMatrixValue::m_column, val);
     return *this;
 }

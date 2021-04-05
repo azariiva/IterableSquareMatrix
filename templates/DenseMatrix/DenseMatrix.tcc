@@ -176,34 +176,20 @@ DenseMatrix<T> DenseMatrix<T>::dot(const DenseMatrix& m) const
 template <typename T>
 DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value&), const SquareMatrix& m)
 {
-    T& m_val;
-
     if (SquareMatrix::m_num_rows != m.num_rows() || SquareMatrix::m_num_columns != m.num_columns())
         throw std::invalid_argument("operands could not be broadcast together");
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
-        {
-            m_val = get(i, j);
-            op(m_val, m.get(i, j));
-            if (abs(m_val - T()) <= SquareMatrix::get_precision())
-                m_val = T();
-        }
+            get(i, j).perform_operation(op, m.get(i, j));
     return *this;
 }
 
 template <typename T>
 DenseMatrix<T>& DenseMatrix<T>::perform_operation(void (*op)(Value&, const Value&), const Value& val)
 {
-    T& m_val;
-
     for (size_t i = 0; i < SquareMatrix::m_num_rows; ++i)
         for (size_t j = 0; j < SquareMatrix::m_num_columns; ++j)
-        {
-            m_val = get(i, j);
-            op(m_val, val);
-            if (abs(m_val - T()) <= SquareMatrix::get_precision())
-                m_val = T();
-        }
+            get(i, j).perform_operation(op, val);
     return *this;
 }
 

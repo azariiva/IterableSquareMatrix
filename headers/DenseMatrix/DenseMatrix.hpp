@@ -31,7 +31,7 @@ public:
 private:
     DenseMatrix& perform_operation(void (*op)(Value&, const Value&), const SquareMatrix& m);
     DenseMatrix& perform_operation(void (*op)(Value&, const Value&), const Value& val);
-
+    
 private:
     Value **m_matrix;
 };
